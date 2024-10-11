@@ -1,0 +1,3 @@
+/Users/alix/Documents/github/flappy-bird-renderer/CMakeFiles/flappy-bird-renderer.dir
+/Users/alix/Documents/github/flappy-bird-renderer/CMakeFiles/edit_cache.dir
+/Users/alix/Documents/github/flappy-bird-renderer/CMakeFiles/rebuild_cache.dir
