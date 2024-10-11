@@ -33,7 +33,12 @@
 
 # my stuff
 out/
+
 CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+
 build/
 .vscode/
 flappy-bird-renderer
