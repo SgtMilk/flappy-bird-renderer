@@ -25,8 +25,6 @@ private:
 
     Bird *bird;
     Pipes *pipes;
-
-    float positionX;
 };
 
 #endif // WINDOW_DEF

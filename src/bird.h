@@ -1,15 +1,18 @@
 #include <SFML/Graphics.hpp>
 
-#define BIRD_SCALE 0.2
-#define COLLISION_TOLERANCE 25
-#define COLLISION_TO_TRIGGER 300
-
 #ifndef BIRD_DEF
 #define BIRD_DEF
 
 class Bird
 {
 public:
+
+    // constants
+    static const float BIRD_SCALE;
+    static const int COLLISION_TOLERANCE;
+    static const int NUM_COLLISIONS_TO_TRIGGER_PER_SECOND;
+    int NUM_COLLISIONS_TO_TRIGGER;
+    
     Bird(sf::Vector2f center, int frameRate);
 
     sf::Sprite updatePosition();
@@ -29,7 +32,6 @@ private:
     sf::Sprite bird;
 
     int collisionCounter;
-    float collisionsToTrigger;
 };
 
 #endif // BIRD_DEF

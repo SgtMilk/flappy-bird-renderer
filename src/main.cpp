@@ -2,11 +2,14 @@
 
 #include "window.h"
 
+// constants
+static const int screenWidth = 800;
+static const int screenHeight = 600;
+static const int frameRate = 60;
+
 int main(int, char**)
 {
-    std::cout << "Initializing\n";
-
-    Window window(800, 600, 60);
+    Window window(screenWidth, screenHeight, frameRate);
 
     while(window.isOpen())
     {

@@ -3,13 +3,16 @@
 #ifndef PIPES_DEF
 #define PIPES_DEF
 
-#define NUM_PIPES 4
-#define PIPE_SCALE 0.4
-#define PIPE_OFFSET_RANGE 300
-
 class Pipes
 {
 public:
+
+    // constants
+    static const int NUM_PIPES;
+    static const float PIPE_SCALE;
+    static const int PIPE_OFFSET_RANGE;
+    static const float SPEED_PER_SECOND;
+
     Pipes(int screenWidth, int screenHeight, int frameRate);
     ~Pipes();
 

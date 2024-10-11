@@ -3,7 +3,7 @@
 
 Window::Window(int screenWidth, int screenHeight, int frameRate) 
 {
-    window.create(sf::VideoMode(screenWidth, screenHeight), "Game Window");
+    window.create(sf::VideoMode(screenWidth, screenHeight), "Flappy Bird");
 
     sf::Vector2u windowDimensions = window.getSize();
     pipes = new Pipes(windowDimensions.x, window.getSize().y, frameRate);
@@ -47,16 +47,17 @@ void Window::update()
 
     clk.restart();
 
-    // clear the window with black color
+    // clear the window with cyan color
     window.clear(sf::Color::Cyan);
 
     sf::Sprite* pipeSprites = pipes->updatePosition();
-    for(int i = 0 ; i < NUM_PIPES ; i++) window.draw(pipeSprites[i]);
-
     sf::Sprite birdSprite = bird->updatePosition();
+
+    for(int i = 0 ; i < pipes->NUM_PIPES ; i++) window.draw(pipeSprites[i]);
     window.draw(birdSprite);
 
-    bool isCollision = bird->checkCollision(pipeSprites, NUM_PIPES);
+    // resetting if bird touches pipe or falls too low
+    bool isCollision = bird->checkCollision(pipeSprites, pipes->NUM_PIPES);
     bool ooo = bird->isOOO(window.getSize().y);
     if(isCollision || ooo) reset();
 
