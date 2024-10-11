@@ -1,15 +1,17 @@
 #include "pipes.h"
-#include "SFML/Window.hpp"
 
-#include <iostream>
+const int Pipes::NUM_PIPES = 4;
+const float Pipes::PIPE_SCALE = 0.4;
+const int Pipes::PIPE_OFFSET_RANGE = 300;
+const float Pipes::SPEED_PER_SECOND = 500;
 
 Pipes::Pipes(int screenWidth, int screenHeight, int frameRate)
 {
     bool res = pipeTexture.loadFromFile("./lib/pipe.png");
-    if(!res) std::cout << "Cannot load pipe\n";
+    if(!res) throw("Cannot load pipe\n");
 
     pipeSprites = new sf::Sprite[NUM_PIPES];
-    if (pipeSprites == nullptr) std::cout << "Pipe array could not be created\n";
+    if (pipeSprites == nullptr) throw("Pipe array could not be created\n");
 
     for(int i = 0 ; i < NUM_PIPES ; i++)
     {
@@ -30,7 +32,7 @@ Pipes::Pipes(int screenWidth, int screenHeight, int frameRate)
     }
 
     this->frameRate = frameRate;
-    this->speed = 500.0f / frameRate;
+    this->speed = SPEED_PER_SECOND / frameRate;
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
 }

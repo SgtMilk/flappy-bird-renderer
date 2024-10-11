@@ -1,12 +1,13 @@
 #include "bird.h"
-#include "SFML/Window.hpp"
 
-#include <iostream>
+const float Bird::BIRD_SCALE = 0.2;
+const int Bird::COLLISION_TOLERANCE = 25;
+const int Bird::NUM_COLLISIONS_TO_TRIGGER_PER_SECOND = 300;
 
 Bird::Bird(sf::Vector2f center, int frameRate)
 {
     bool res = birdTexture.loadFromFile("./lib/bird.png");
-    if(!res) std::cout << "Cannot load bird\n";
+    if(!res) throw("Cannot load bird\n");
     bird.setTexture(birdTexture, true);
     bird.setScale(BIRD_SCALE, BIRD_SCALE);
 
@@ -21,7 +22,7 @@ Bird::Bird(sf::Vector2f center, int frameRate)
     negAcc = acc * 2;
 
     collisionCounter = 0;
-    collisionsToTrigger = COLLISION_TO_TRIGGER / frameRate;
+    NUM_COLLISIONS_TO_TRIGGER = NUM_COLLISIONS_TO_TRIGGER_PER_SECOND / frameRate;
 }
 
 sf::Sprite Bird::updatePosition()
@@ -68,7 +69,7 @@ bool Bird::checkCollision(sf::Sprite *pipeSprites, int numPipes){
         {
             collisionCounter++;
             isCollision = true;
-            if(collisionCounter > collisionsToTrigger) return true;
+            if(collisionCounter > NUM_COLLISIONS_TO_TRIGGER) return true;
         }
     }
 
