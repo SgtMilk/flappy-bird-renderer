@@ -35,8 +35,12 @@
 out/
 
 CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
 Makefile
 
 build/
 .vscode/
 flappy-bird-renderer
+
+.DS_Store
