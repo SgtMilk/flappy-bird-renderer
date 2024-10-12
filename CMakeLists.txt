@@ -10,3 +10,5 @@ add_executable(flappy-bird-renderer
     src/pipes.cpp)
 
 target_link_libraries(flappy-bird-renderer sfml-graphics sfml-window sfml-system)
+
+file(COPY ${PROJECT_SOURCE_DIR}/lib DESTINATION ${CMAKE_BINARY_DIR})
