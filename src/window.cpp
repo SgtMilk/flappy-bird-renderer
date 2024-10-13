@@ -1,18 +1,16 @@
 #include "window.h"
 #include "SFML/Window.hpp"
 
-Window::Window(int screenWidth, int screenHeight, int frameRate) 
+Window::Window(int InScreenWidth, int InScreenHeight, int InFrameRate)
+    : pipes(InScreenWidth, InScreenHeight, InFrameRate)
+    , bird(sf::Vector2f(InScreenWidth / 2, InScreenHeight / 2), InFrameRate)
 {
-    window.create(sf::VideoMode(screenWidth, screenHeight), "Flappy Bird");
+    if(bird.getIsError() || pipes.getIsError()) return;
+    
+    window.create(sf::VideoMode(InScreenWidth, InScreenHeight), "Flappy Bird");
 
-    sf::Vector2u windowDimensions = window.getSize();
-    pipes = new Pipes(windowDimensions.x, window.getSize().y, frameRate);
-
-    sf::Vector2f center = window.getView().getCenter();
-    bird = new Bird(center, frameRate);
-
-    this->frameRate = frameRate;
-    this->frameTime = sf::seconds(1.0f / frameRate);
+    frameRate = InFrameRate;
+    frameTime = sf::seconds(1.0f / frameRate);
 }
 
 void Window::handleEvents()
@@ -28,7 +26,7 @@ void Window::handleEvents()
 
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
         {
-            bird->jump();
+            bird.jump();
             return;
         }
 
@@ -50,15 +48,15 @@ void Window::update()
     // clear the window with cyan color
     window.clear(sf::Color::Cyan);
 
-    sf::Sprite* pipeSprites = pipes->updatePosition();
-    sf::Sprite birdSprite = bird->updatePosition();
+    std::vector<sf::Sprite> pipeSprites = pipes.updatePosition();
+    sf::Sprite birdSprite = bird.updatePosition();
 
-    for(int i = 0 ; i < pipes->NUM_PIPES ; i++) window.draw(pipeSprites[i]);
+    for(int i = 0 ; i < pipes.NUM_PIPES ; i++) window.draw(pipeSprites[i]);
     window.draw(birdSprite);
 
     // resetting if bird touches pipe or falls too low
-    bool isCollision = bird->checkCollision(pipeSprites, pipes->NUM_PIPES);
-    bool ooo = bird->isOOO(window.getSize().y);
+    bool isCollision = bird.checkCollision(pipeSprites, pipes.NUM_PIPES);
+    bool ooo = bird.isOOO(window.getSize().y);
     if(isCollision || ooo) reset();
 
     // end the current frame
@@ -67,7 +65,6 @@ void Window::update()
 
 void Window::reset()
 {
-    pipes = new Pipes(window.getSize().x, window.getSize().y, frameRate);
-    sf::Vector2f center = window.getView().getCenter();
-    bird = new Bird(center, frameRate);
+    pipes.reset();
+    bird.reset(window.getView().getCenter());
 }

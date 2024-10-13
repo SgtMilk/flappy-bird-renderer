@@ -1,10 +1,9 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
 #include "bird.h"
 #include "pipes.h"
-
-#ifndef WINDOW_DEF
-#define WINDOW_DEF
 
 class Window
 {
@@ -23,8 +22,6 @@ private:
     sf::Time frameTime;
     sf::Clock clk;
 
-    Bird *bird;
-    Pipes *pipes;
+    Bird bird;
+    Pipes pipes;
 };
-
-#endif // WINDOW_DEF

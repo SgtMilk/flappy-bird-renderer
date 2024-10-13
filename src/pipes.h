@@ -1,7 +1,6 @@
-#include <SFML/Graphics.hpp>
+#pragma once
 
-#ifndef PIPES_DEF
-#define PIPES_DEF
+#include <SFML/Graphics.hpp>
 
 class Pipes
 {
@@ -14,19 +13,22 @@ public:
     static const float SPEED_PER_SECOND;
 
     Pipes(int screenWidth, int screenHeight, int frameRate);
-    ~Pipes();
 
-    sf::Sprite *updatePosition();
+    std::vector<sf::Sprite> updatePosition();
+
+    void reset();
+
+    bool getIsError();
 
 private:
     sf::Texture pipeTexture;
-    sf::Sprite *pipeSprites;
+    std::vector<sf::Sprite> pipeSprites;
 
     int frameRate;
     float speed;
 
     int screenWidth;
     int screenHeight;
-};
 
-#endif // PIPES_DEF
+    bool isError;
+};

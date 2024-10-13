@@ -1,7 +1,6 @@
-#include <SFML/Graphics.hpp>
+#pragma once
 
-#ifndef BIRD_DEF
-#define BIRD_DEF
+#include <SFML/Graphics.hpp>
 
 class Bird
 {
@@ -18,8 +17,12 @@ public:
     sf::Sprite updatePosition();
     void jump();
 
-    bool checkCollision(sf::Sprite *pipeSprites, int numPipes);
+    bool checkCollision(std::vector<sf::Sprite> pipeSprites, int numPipes);
     bool isOOO(int screenHeight);
+
+    void reset(sf::Vector2f center);
+
+    bool getIsError();
 
 private:
     int frameRate;
@@ -32,6 +35,6 @@ private:
     sf::Sprite bird;
 
     int collisionCounter;
-};
 
-#endif // BIRD_DEF
+    bool isError;
+};
