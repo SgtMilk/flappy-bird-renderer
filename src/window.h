@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "bird.h"
-#include "pipes.h"
+#include "pipe.h"
 
 class Window
 {
@@ -16,6 +16,9 @@ public:
     void update();
     void reset();
 private:
+    static const int NUM_PIPES;
+    static const int PIPE_OFFSET_RANGE;
+
     sf::RenderWindow window;
 
     float frameRate;
@@ -23,5 +26,6 @@ private:
     sf::Clock clk;
 
     Bird bird;
-    Pipes pipes;
+    std::vector<Pipe> pipes;
+    sf::Texture pipeTexture;
 };

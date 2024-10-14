@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pipe.h"
+
 #include <SFML/Graphics.hpp>
 
 class Bird
@@ -17,7 +19,7 @@ public:
     sf::Sprite updatePosition();
     void jump();
 
-    bool checkCollision(std::vector<sf::Sprite> pipeSprites, int numPipes);
+    bool checkCollision(std::vector<Pipe> pipes);
     bool isOOO(int screenHeight);
 
     void reset(sf::Vector2f center);

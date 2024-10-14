@@ -49,7 +49,7 @@ void Bird::jump()
     speed = -7;
 }
 
-bool Bird::checkCollision(std::vector<sf::Sprite> pipeSprites, int numPipes){
+bool Bird::checkCollision(std::vector<Pipe> pipes){
     sf::Vector2f birdPos = bird.getPosition();
     float width = bird.getGlobalBounds().width;
     float height = bird.getGlobalBounds().height;
@@ -57,21 +57,24 @@ bool Bird::checkCollision(std::vector<sf::Sprite> pipeSprites, int numPipes){
 
     bool isCollision = false;
     
-    for(int i = 0 ; i < numPipes ; i++)
+    for(int i = 0 ; i < pipes.size() ; i++)
     {
-        sf::FloatRect pipeRect = pipeSprites[i].getGlobalBounds();
+        // circle to rectangle collision detection
+        Bounds pipeRect = pipes[i].getBounds();
         float testX = birdPos.x;
         float testY = birdPos.y;
 
+        // finding right or left to test (otherwise distX = 0)
         if(birdPos.x < pipeRect.left) testX  = pipeRect.left;
-        else if(birdPos.x > pipeRect.left + pipeRect.width) testX = pipeRect.left + pipeRect.width;
+        else if(birdPos.x > pipeRect.right) testX = pipeRect.right;
 
+        // finding top or bottom to test (otherwise distY = 0)
         if(birdPos.y < pipeRect.top) testY  = pipeRect.top;
-        else if(birdPos.y > pipeRect.top + pipeRect.height) testY = pipeRect.top + pipeRect.height;
+        else if(birdPos.y > pipeRect.bottom) testY = pipeRect.bottom;
 
         float distX = birdPos.x - testX;
         float distY = birdPos.y - testY;
-        float distance = sqrt((distX * distX) + (distY * distY)); 
+        float distance = sqrt(pow(distX, 2) + pow(distY, 2)); 
 
         if(radius - distance > COLLISION_TOLERANCE)
         {

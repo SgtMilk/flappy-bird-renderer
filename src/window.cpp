@@ -1,12 +1,21 @@
 #include "window.h"
 #include "SFML/Window.hpp"
 
+const int Window::NUM_PIPES = 4;
+const int Window::PIPE_OFFSET_RANGE = 300;
+
 Window::Window(int InScreenWidth, int InScreenHeight, int InFrameRate)
-    : pipes(InScreenWidth, InScreenHeight, InFrameRate)
-    , bird(sf::Vector2f(InScreenWidth / 2, InScreenHeight / 2), InFrameRate)
+    : bird(sf::Vector2f(InScreenWidth / 2, InScreenHeight / 2), InFrameRate)
 {
-    if(bird.getIsError() || pipes.getIsError()) return;
-    
+    if(bird.getIsError()) return;
+
+    for(int i = 0 ; i < NUM_PIPES ; i++) {
+        Pipe pipe(InScreenWidth, InScreenHeight, InFrameRate, i);
+        if(pipe.getIsError()) return;
+
+        pipes.push_back(pipe);
+    }
+
     window.create(sf::VideoMode(InScreenWidth, InScreenHeight), "Flappy Bird");
 
     frameRate = InFrameRate;
@@ -29,7 +38,6 @@ void Window::handleEvents()
             bird.jump();
             return;
         }
-
     }
 }
 
@@ -48,14 +56,19 @@ void Window::update()
     // clear the window with cyan color
     window.clear(sf::Color::Cyan);
 
-    std::vector<sf::Sprite> pipeSprites = pipes.updatePosition();
+    
     sf::Sprite birdSprite = bird.updatePosition();
-
-    for(int i = 0 ; i < pipes.NUM_PIPES ; i++) window.draw(pipeSprites[i]);
     window.draw(birdSprite);
 
+    float random_offset = rand() % PIPE_OFFSET_RANGE - PIPE_OFFSET_RANGE / 2.0f;
+    for(int i = 0 ; i < NUM_PIPES ; i++) 
+    {
+        sf::Sprite pipeSprite = pipes[i].updatePosition(random_offset);
+        window.draw(pipeSprite);
+    }
+
     // resetting if bird touches pipe or falls too low
-    bool isCollision = bird.checkCollision(pipeSprites, pipes.NUM_PIPES);
+    bool isCollision = bird.checkCollision(pipes);
     bool ooo = bird.isOOO(window.getSize().y);
     if(isCollision || ooo) reset();
 
@@ -65,6 +78,6 @@ void Window::update()
 
 void Window::reset()
 {
-    pipes.reset();
+    for(int i = 0 ; i < NUM_PIPES ; i++) pipes[i].reset();
     bird.reset(window.getView().getCenter());
 }
