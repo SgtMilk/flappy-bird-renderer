@@ -7,7 +7,7 @@ add_executable(flappy-bird-renderer
     src/main.cpp 
     src/window.cpp 
     src/bird.cpp
-    src/pipes.cpp)
+    src/pipe.cpp)
 
 target_link_libraries(flappy-bird-renderer sfml-graphics sfml-window sfml-system)
 
