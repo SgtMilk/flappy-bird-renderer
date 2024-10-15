@@ -15,11 +15,11 @@ public:
 
     // constants
     static const float PIPE_SCALE;
-    static const float SPEED_PER_SECOND;
+    static const float SPEED;
 
-    Pipe(int screenWidth, int screenHeight, int frameRate, int pipeNum);
+    Pipe(int screenWidth, int screenHeight, int pipeNum);
 
-    sf::Sprite updatePosition(float randHeight);
+    void updatePosition(float dt, float randHeight);
 
     Bounds getBounds();
 
@@ -27,15 +27,13 @@ public:
 
     bool getIsError();
 
+    sf::Sprite sprite;
+
 private:
     sf::Texture *pipeTexture;
-    sf::Sprite pipeSprite;
     
     bool isTopPipe;
     bool isRightPipe;
-
-    int frameRate;
-    float speed;
 
     int screenWidth;
     int screenHeight;

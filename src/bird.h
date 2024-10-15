@@ -11,12 +11,13 @@ public:
     // constants
     static const float BIRD_SCALE;
     static const int COLLISION_TOLERANCE;
-    static const int NUM_COLLISIONS_TO_TRIGGER_PER_SECOND;
-    int NUM_COLLISIONS_TO_TRIGGER;
+    static const float JUMP_SPEED;
+    static const float ACCELERATION;
+    static const float NEGATIVE_ACCELERATION;
     
-    Bird(sf::Vector2f center, int frameRate);
+    Bird(sf::Vector2f center);
 
-    sf::Sprite updatePosition();
+    void updatePosition(float dt);
     void jump();
 
     bool checkCollision(std::vector<Pipe> pipes);
@@ -26,17 +27,12 @@ public:
 
     bool getIsError();
 
+    sf::Sprite sprite;
+
 private:
-    int frameRate;
- 
     float speed;
-    float acc;
-    float negAcc;
 
     sf::Texture birdTexture;
-    sf::Sprite bird;
-
-    int collisionCounter;
 
     bool isError;
 };
