@@ -10,10 +10,13 @@ class Window
 public:
     Window(int screenWidth, int screenHeight, int frameRate);
 
-    void handleEvents();
-    bool isOpen();
+    void run();
 
-    void update();
+    void handleEvents();
+
+    void update(float dt);
+    void render();
+
     void reset();
 private:
     static const int NUM_PIPES;
@@ -23,7 +26,6 @@ private:
 
     float frameRate;
     sf::Time frameTime;
-    sf::Clock clk;
 
     Bird bird;
     std::vector<Pipe> pipes;

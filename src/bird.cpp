@@ -4,12 +4,12 @@
 
 const float Bird::BIRD_SCALE = 0.2;
 const int Bird::COLLISION_TOLERANCE = 25;
-const int Bird::NUM_COLLISIONS_TO_TRIGGER_PER_SECOND = 300;
+const float Bird::JUMP_SPEED = -500;
+const float Bird::ACCELERATION = 1000;
+const float Bird::NEGATIVE_ACCELERATION = 2000;
 
-Bird::Bird(sf::Vector2f InCenter, int InFrameRate)
+Bird::Bird(sf::Vector2f InCenter)
 {
-    frameRate = InFrameRate;
-
     bool res = birdTexture.loadFromFile("./lib/bird.png");
     if(!res) {
         std::cout << "Cannot load bird image. Exiting.\n";
@@ -17,42 +17,34 @@ Bird::Bird(sf::Vector2f InCenter, int InFrameRate)
         return;
     };
 
-    bird.setTexture(birdTexture, true);
-    bird.setScale(BIRD_SCALE, BIRD_SCALE);
+    sprite.setTexture(birdTexture, true);
+    sprite.setScale(BIRD_SCALE, BIRD_SCALE);
 
-    sf::Vector2f dimensions = bird.getLocalBounds().getSize();
-    bird.setOrigin(dimensions.x / 2, dimensions.y / 2);
+    sf::Vector2f dimensions = sprite.getLocalBounds().getSize();
+    sprite.setOrigin(dimensions.x / 2, dimensions.y / 2);
     reset(InCenter);
-
-    acc = 9.8 / frameRate * 1.5;
-    negAcc = acc * 2;
-
-    collisionCounter = 0;
-    NUM_COLLISIONS_TO_TRIGGER = NUM_COLLISIONS_TO_TRIGGER_PER_SECOND / frameRate;
 
     isError = false;
 }
 
-sf::Sprite Bird::updatePosition()
+void Bird::updatePosition(float dt)
 {
-    speed += (speed >= 0 ? negAcc : acc);
+    speed += (speed >= 0 ? NEGATIVE_ACCELERATION : ACCELERATION) * dt;
 
-    sf::Vector2f position = bird.getPosition();
-    position.y += speed;
-    bird.setPosition(position);
-
-    return bird;
+    sf::Vector2f position = sprite.getPosition();
+    position.y += speed * dt;
+    sprite.setPosition(position);
 }
 
 void Bird::jump()
 {
-    speed = -7;
+    speed = JUMP_SPEED;
 }
 
 bool Bird::checkCollision(std::vector<Pipe> pipes){
-    sf::Vector2f birdPos = bird.getPosition();
-    float width = bird.getGlobalBounds().width;
-    float height = bird.getGlobalBounds().height;
+    sf::Vector2f birdPos = sprite.getPosition();
+    float width = sprite.getGlobalBounds().width;
+    float height = sprite.getGlobalBounds().height;
     float radius = (width < height ? width : height);
 
     bool isCollision = false;
@@ -76,20 +68,14 @@ bool Bird::checkCollision(std::vector<Pipe> pipes){
         float distY = birdPos.y - testY;
         float distance = sqrt(pow(distX, 2) + pow(distY, 2)); 
 
-        if(radius - distance > COLLISION_TOLERANCE)
-        {
-            collisionCounter++;
-            isCollision = true;
-            if(collisionCounter > NUM_COLLISIONS_TO_TRIGGER) return true;
-        }
+        if(radius - distance > COLLISION_TOLERANCE) return true;
     }
 
-    if(!isCollision) collisionCounter = 0;
     return false;
 }
 
 bool Bird::isOOO(int screenHeight){
-    float y = bird.getPosition().y;
+    float y = sprite.getPosition().y;
     float limit = screenHeight / 4;
 
     return y < -1 * limit || y > limit + screenHeight;
@@ -97,7 +83,7 @@ bool Bird::isOOO(int screenHeight){
 
 void Bird::reset(sf::Vector2f center)
 {
-    bird.setPosition(center);
+    sprite.setPosition(center);
     speed = 0;
 }
 
