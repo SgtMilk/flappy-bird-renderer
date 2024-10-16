@@ -5,8 +5,9 @@
 
 const int Window::NUM_PIPES = 4;
 const int Window::PIPE_OFFSET_RANGE = 300;
+const sf::Time Window::LOGIC_DT = sf::seconds(1.0 / 120);
 
-Window::Window(int InScreenWidth, int InScreenHeight, int InFrameRate)
+Window::Window(int InScreenWidth, int InScreenHeight)
     : bird(sf::Vector2f(InScreenWidth / 2, InScreenHeight / 2))
 {
     if(bird.getIsError()) return;
@@ -19,30 +20,29 @@ Window::Window(int InScreenWidth, int InScreenHeight, int InFrameRate)
     }
 
     window.create(sf::VideoMode(InScreenWidth, InScreenHeight), "Flappy Bird");
-
-    frameRate = InFrameRate;
-    frameTime = sf::seconds(1.0f / frameRate);
 }
 
 void Window::run()
 {   
-    const sf::Time dt = sf::seconds(1.0 / frameRate);
     sf::Clock clk;
+
+    sf::Time accumulator = sf::seconds(0);
 
     while(window.isOpen())
     {
         sf::Time frameTime = clk.getElapsedTime();
         clk.restart();
 
-        while(frameTime > sf::seconds(0))
+        accumulator += frameTime;
+
+        while(accumulator >= LOGIC_DT)
         {
-            sf::Time deltaTime = frameTime < dt ? frameTime : dt;
-
             handleEvents();
-            update(deltaTime.asSeconds());
+            update(LOGIC_DT.asSeconds());
 
-            frameTime -= deltaTime;;
+            accumulator -= LOGIC_DT;
         }
+
         render();
     }
 }

@@ -8,7 +8,7 @@
 class Window
 {
 public:
-    Window(int screenWidth, int screenHeight, int frameRate);
+    Window(int screenWidth, int screenHeight);
 
     void run();
 
@@ -21,13 +21,10 @@ public:
 private:
     static const int NUM_PIPES;
     static const int PIPE_OFFSET_RANGE;
+    static const sf::Time LOGIC_DT;
 
     sf::RenderWindow window;
 
-    float frameRate;
-    sf::Time frameTime;
-
     Bird bird;
     std::vector<Pipe> pipes;
-    sf::Texture pipeTexture;
 };
