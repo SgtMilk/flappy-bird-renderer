@@ -2,7 +2,7 @@
 
 ![Game Screen](./assets/game_screen.png)
 
-This project was to learn how to use SFML, collision detection between sprites, and the render loop.
+This project was to learn how to use SFML, collision detection between sprites (circle and rectangle), and the render loop.
 
 You can use the `run.sh` script to run the game. You will need cmake and sfml installed.
 
